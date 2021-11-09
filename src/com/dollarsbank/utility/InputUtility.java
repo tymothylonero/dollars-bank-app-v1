@@ -31,5 +31,55 @@ public class InputUtility {
 		} while(!valid);
 		return input;
 	}
+	
+	public static double getValidDouble(Scanner sc) {
+		
+		boolean valid = false;
+		double value = 0;
+		do {
+			try {
+				value = Double.parseDouble(sc.nextLine());
+				valid = true;
+			} catch (Exception e) {
+				System.out.println("Invalid input. Try again.");
+			}
+		} while(!valid);
+		
+		return value;
+	}
+	
+	public static double getPositiveDouble(Scanner sc, String type) {
+		
+		boolean valid = false;
+		double value = 0;
+		do {
+			value = getValidDouble(sc);
+			if(value >= 0)
+				valid = true;
+			else
+				System.out.println(type + " cannot be negative.");
+
+		} while(!valid);
+		
+		return value;
+	}
+	
+	public static double getPositiveDoubleNonZero(Scanner sc, String type) {
+		
+		boolean valid = false;
+		double value = 0;
+		do {
+			value = getValidDouble(sc);
+			if(value > 0)
+				valid = true;
+			else if(value == 0)
+				System.out.println(type + " cannot be zero.");
+			else
+				System.out.println(type + " cannot be negative.");
+
+		} while(!valid);
+		
+		return value;
+	}
 
 }

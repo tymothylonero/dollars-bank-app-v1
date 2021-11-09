@@ -11,8 +11,13 @@ import com.dollarsbank.utility.PrintUtility;
 public class LoginController {
 
 	public static Account login(Scanner sc, List<Account> accounts) {
-		PrintUtility.boxedPrint("Enter Login Details");
 		
+		if(accounts.isEmpty()) {
+			System.out.println("Cannot login, there are no accounts!");
+			return null;
+		}
+		
+		PrintUtility.boxedPrint("Enter Login Details");
 		boolean loggedIn = false;
 		int loginAttempts = 5;
 		Account found = null;
@@ -45,6 +50,18 @@ public class LoginController {
 	public static Account createAccount(Scanner sc, List<Account> accounts) {
 		PrintUtility.boxedPrint("Enter Details for New Account");
 		
+		boolean newAccount = false;
+		String accountID = null;
+		do {
+			System.out.println("Account ID:");
+			accountID = sc.nextLine();
+			if(AccountUtility.findAccountID(accounts, accountID) == null)
+				newAccount = true;
+			else
+				System.out.println("The account ID of '" + accountID + "' already exists.");
+			
+		} while (!newAccount);
+		
 		System.out.println("Customer Name:");
 		String name = sc.nextLine();
 
@@ -53,17 +70,13 @@ public class LoginController {
 
 		System.out.println("Customer Contact Number:");
 		String phoneNumber = sc.nextLine();
-
-		System.out.println("User ID:");
-		String accountID = sc.nextLine();
 		
 		System.out.println("Password:");
 		String password = sc.nextLine();
-
-		System.out.println("Initial Deposit Amount:");
-		double balance = Double.parseDouble(sc.nextLine());
 		
-		return new Account(accountID, password, name, address, phoneNumber, LocalDateTime.now(), balance);
+		Account created = new Account(accountID, password, name, address, phoneNumber, LocalDateTime.now(), 0);
+		created.initialDeposit(sc, "Initial Deposit Amount:");
+		return created;
 	}
 	
 }

@@ -22,20 +22,24 @@ public class DollarsBankApplication {
 		boolean running = true;
 		accountList = new ArrayList<Account>();
 		
+		// Run the login menu
 		do {
 			PrintUtility.boxedPrint("DOLLARSBANK Welcomes You!");
 			int input = InputUtility.getNumberInput(sc, new String[] {"Create New Account", "Login", "Exit"});
 			switch(input) {
+			// Create an account
 			case 1:
 				currentUser = LoginController.createAccount(sc, accountList);
 				accountList.add(currentUser);
 				MenuController.mainMenu(sc, currentUser);
 				break;
+			// Log into an existing account
 			case 2:
 				currentUser = LoginController.login(sc, accountList);
 				if(currentUser != null)
 					MenuController.mainMenu(sc, currentUser);
 				break;
+			// Exit the application
 			case 3:
 				running = false;
 				System.out.println("Goodbye!");

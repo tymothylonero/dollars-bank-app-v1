@@ -2,7 +2,11 @@ package com.dollarsbank.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.dollarsbank.utility.InputUtility;
 
 public class Account implements Serializable {
 
@@ -16,7 +20,7 @@ public class Account implements Serializable {
 	private LocalDateTime created;
 	
 	private double balance;
-	private ArrayList<Transaction> transactions;
+	private List<Transaction> transactions;
 	
 	public Account() {
 		// empty constructor
@@ -31,6 +35,63 @@ public class Account implements Serializable {
 		this.phoneNumber = phoneNumber;
 		this.created = created;
 		this.balance = balance;
+		this.transactions = new ArrayList<Transaction>();
+	}
+	
+	public String fiveTransactions() {
+		
+		if(transactions.size() == 0) {
+			System.out.println("No transaction history!");
+			return "";
+		}
+		
+		String toReturn = "";
+		for (int idx = 0; idx < transactions.size(); idx++) {
+			if(idx < 5)
+				toReturn = toReturn + (idx + 1) + ". " + transactions.get(idx) + "\n";
+			else
+				break;
+		}
+		return toReturn;
+	}
+	
+	public void initialDeposit(Scanner sc, String message) {
+
+		System.out.println(message);
+		double amount = InputUtility.getPositiveDouble(sc, "Initial deposit");
+		if(amount > 0) {
+			transactions.add(0, new Transaction("Deposit", "Initial Deposit", amount, this.modifyBalance(amount), LocalDateTime.now()));
+			System.out.println("Successfully deposited $" + amount);
+		}
+	}
+	
+	public void deposit(Scanner sc, String message) {
+
+		System.out.println(message);
+		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Deposit");
+		System.out.println("Enter a description for this deposit:");
+		String description = sc.nextLine();
+		transactions.add(0, new Transaction("Deposit", description, amount, this.modifyBalance(amount), LocalDateTime.now()));
+		System.out.println("Successfully deposited $" + amount);
+	}
+	
+	public void withdraw(Scanner sc, String message) {
+
+		if(this.getBalance() <= 0) {
+			System.out.println("Cannot withdraw from an account with no money!");
+			return;
+		}
+		
+		System.out.println(message);
+		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Withdrawal");
+		if(amount > this.getBalance()) {
+			System.out.println("Cannot withdraw more than what is in your account!");
+		} else {
+			System.out.println("Enter a description for this withdrawal:");
+			String description = sc.nextLine();
+			transactions.add(0, new Transaction("Withdrawal", description, (amount * -1), this.modifyBalance(amount * -1), LocalDateTime.now()));
+			System.out.println("Successfully withdrew $" + amount);
+		}
 	}
 
 	public String getAccountID() {
@@ -88,8 +149,13 @@ public class Account implements Serializable {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
+	
+	public double modifyBalance(double balance) {
+		this.balance += balance;
+		return this.balance;
+	}
 
-	public ArrayList<Transaction> getTransactions() {
+	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 
@@ -106,10 +172,6 @@ public class Account implements Serializable {
 				+ "\nContact number: " + phoneNumber
 				+ "\nCurrent balance: " + balance
 				+ "\nCreated on: " + created;
-		
-		
-//		return "accountID: " + accountID + "\nName of user: " + name + "\nAddress: " + address
-//				+ ", phoneNumber=" + phoneNumber + ", created=" + created + "\nCurrent balance: " + balance + "\n";
 	}
 	
 }
