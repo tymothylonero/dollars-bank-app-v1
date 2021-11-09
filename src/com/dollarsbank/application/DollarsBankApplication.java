@@ -1,6 +1,7 @@
 package com.dollarsbank.application;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.dollarsbank.controller.LoginController;
@@ -13,23 +14,27 @@ public class DollarsBankApplication {
 	
 	public static Scanner sc;
 	public static List<Account> accountList;
-	public static Account user;
+	public static Account currentUser;
 	
 	public static void main(String[] args) {
 		
 		sc = new Scanner(System.in);
 		boolean running = true;
+		accountList = new ArrayList<Account>();
+		
 		do {
 			PrintUtility.boxedPrint("DOLLARSBANK Welcomes You!");
 			int input = InputUtility.getNumberInput(sc, new String[] {"Create New Account", "Login", "Exit"});
 			switch(input) {
 			case 1:
-				user = LoginController.createAccount(sc, accountList);
-				MenuController.mainMenu(sc, user);
+				currentUser = LoginController.createAccount(sc, accountList);
+				accountList.add(currentUser);
+				MenuController.mainMenu(sc, currentUser);
 				break;
 			case 2:
-				user = LoginController.login(sc, accountList);
-				MenuController.mainMenu(sc, user);
+				currentUser = LoginController.login(sc, accountList);
+				if(currentUser != null)
+					MenuController.mainMenu(sc, currentUser);
 				break;
 			case 3:
 				running = false;
