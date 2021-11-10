@@ -1,6 +1,8 @@
 package com.dollarsbank.model;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import com.dollarsbank.utility.InputUtility;
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = -1733826301641350346L;
+	
+	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
 	private String accountID;
 	private String password;
@@ -57,22 +61,26 @@ public class Account implements Serializable {
 	
 	public void initialDeposit(Scanner sc, String message) {
 
+		df.setRoundingMode(RoundingMode.DOWN);
 		System.out.println(message);
 		double amount = InputUtility.getPositiveDouble(sc, "Initial deposit");
+		amount = Double.parseDouble(df.format(amount));
 		if(amount > 0) {
 			transactions.add(0, new Transaction("Deposit", "Initial Deposit", amount, this.modifyBalance(amount), LocalDateTime.now()));
-			System.out.println("Successfully deposited $" + amount);
+			System.out.println("Successfully deposited $" + df.format(amount));
 		}
 	}
 	
 	public void deposit(Scanner sc, String message) {
 
+		df.setRoundingMode(RoundingMode.DOWN);
 		System.out.println(message);
 		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Deposit");
+		amount = Double.parseDouble(df.format(amount));
 		System.out.println("Enter a description for this deposit:");
 		String description = sc.nextLine();
 		transactions.add(0, new Transaction("Deposit", description, amount, this.modifyBalance(amount), LocalDateTime.now()));
-		System.out.println("Successfully deposited $" + amount);
+		System.out.println("Successfully deposited $" + df.format(amount));
 	}
 	
 	public void withdraw(Scanner sc, String message) {
@@ -82,15 +90,18 @@ public class Account implements Serializable {
 			return;
 		}
 		
+		df.setRoundingMode(RoundingMode.DOWN);
+		
 		System.out.println(message);
 		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Withdrawal");
+		amount = Double.parseDouble(df.format(amount));
 		if(amount > this.getBalance()) {
 			System.out.println("Cannot withdraw more than what is in your account!");
 		} else {
 			System.out.println("Enter a description for this withdrawal:");
 			String description = sc.nextLine();
 			transactions.add(0, new Transaction("Withdrawal", description, (amount * -1), this.modifyBalance(amount * -1), LocalDateTime.now()));
-			System.out.println("Successfully withdrew $" + amount);
+			System.out.println("Successfully withdrew $" + df.format(amount));
 		}
 	}
 
@@ -143,11 +154,13 @@ public class Account implements Serializable {
 	}
 
 	public double getBalance() {
-		return balance;
+		df.setRoundingMode(RoundingMode.DOWN);
+		return Double.parseDouble(df.format(balance));
 	}
 
 	public void setBalance(double balance) {
-		this.balance = balance;
+		df.setRoundingMode(RoundingMode.DOWN);
+		this.balance = Double.parseDouble(df.format(balance));
 	}
 	
 	public double modifyBalance(double balance) {

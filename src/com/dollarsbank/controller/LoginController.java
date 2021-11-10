@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.dollarsbank.model.Account;
 import com.dollarsbank.utility.AccountUtility;
+import com.dollarsbank.utility.PhoneNumberUtility;
 import com.dollarsbank.utility.PrintUtility;
 
 public class LoginController {
@@ -69,7 +70,7 @@ public class LoginController {
 		String address = sc.nextLine();
 
 		System.out.println("Customer Contact Number:");
-		String phoneNumber = sc.nextLine();
+		String phoneNumber = PhoneNumberUtility.formatPhoneNumber(sc.nextLine());
 		
 		System.out.println("Password:");
 		String password = sc.nextLine();

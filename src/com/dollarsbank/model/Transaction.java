@@ -1,11 +1,15 @@
 package com.dollarsbank.model;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 public class Transaction implements Serializable {
 
 	private static final long serialVersionUID = 6477040768951030656L;
+	
+	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
 	private String type;
 	private String description;
@@ -39,11 +43,13 @@ public class Transaction implements Serializable {
 	}
 
 	public double getAmount() {
-		return amount;
+		df.setRoundingMode(RoundingMode.DOWN);
+		return Double.parseDouble(df.format(amount));
 	}
 
 	public void setAmount(double amount) {
-		this.amount = amount;
+		df.setRoundingMode(RoundingMode.DOWN);
+		this.amount = Double.parseDouble(df.format(amount));
 	}
 
 	public double getAccountBalance() {
@@ -64,10 +70,11 @@ public class Transaction implements Serializable {
 
 	@Override
 	public String toString() {
+		df.setRoundingMode(RoundingMode.DOWN);
 		if(amount < 0)
-			return type + " for -$" + (amount * -1) + "\nDescription: " + description + "\nAccount balance is $" + accountBalance + " as of:\n" + timestamp + "\n";
+			return type + " for -$" + df.format(amount * -1) + "\nDescription: " + description + "\nAccount balance is $" + df.format(accountBalance) + " as of:\n" + timestamp + "\n";
 		else
-			return type + " for $" + amount + "\nDescription: " + description + "\nAccount balance is $" + accountBalance + " as of:\n" + timestamp + "\n";
+			return type + " for $" + df.format(amount) + "\nDescription: " + description + "\nAccount balance is $" + df.format(accountBalance) + " as of:\n" + timestamp + "\n";
 	}
 
 }
