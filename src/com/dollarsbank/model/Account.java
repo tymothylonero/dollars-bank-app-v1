@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.dollarsbank.utility.InputUtility;
+import com.dollarsbank.utility.PrintUtility;
 
 public class Account implements Serializable {
 
@@ -45,7 +46,7 @@ public class Account implements Serializable {
 	public String fiveTransactions() {
 		
 		if(transactions.size() == 0) {
-			System.out.println("No transaction history!");
+			PrintUtility.printColor("No transaction history!", "yellow");
 			return "";
 		}
 		
@@ -62,46 +63,46 @@ public class Account implements Serializable {
 	public void initialDeposit(Scanner sc, String message) {
 
 		df.setRoundingMode(RoundingMode.DOWN);
-		System.out.println(message);
+		PrintUtility.printColor(message, "green");
 		double amount = InputUtility.getPositiveDouble(sc, "Initial deposit");
 		amount = Double.parseDouble(df.format(amount));
 		if(amount > 0) {
 			transactions.add(0, new Transaction("Deposit", "Initial Deposit", amount, this.modifyBalance(amount), LocalDateTime.now()));
-			System.out.println("Successfully deposited $" + df.format(amount));
+			PrintUtility.printColor("Successfully deposited $" + df.format(amount), "lime");
 		}
 	}
 	
 	public void deposit(Scanner sc, String message) {
 
 		df.setRoundingMode(RoundingMode.DOWN);
-		System.out.println(message);
+		PrintUtility.printColor(message, "green");
 		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Deposit");
 		amount = Double.parseDouble(df.format(amount));
-		System.out.println("Enter a description for this deposit:");
+		PrintUtility.printColor("Enter a description for this deposit:", "green");
 		String description = sc.nextLine();
 		transactions.add(0, new Transaction("Deposit", description, amount, this.modifyBalance(amount), LocalDateTime.now()));
-		System.out.println("Successfully deposited $" + df.format(amount));
+		PrintUtility.printColor("Successfully deposited $" + df.format(amount), "lime");
 	}
 	
 	public void withdraw(Scanner sc, String message) {
 
 		if(this.getBalance() <= 0) {
-			System.out.println("Cannot withdraw from an account with no money!");
+			PrintUtility.printColor("Cannot withdraw from an account with no money!", "red");
 			return;
 		}
 		
 		df.setRoundingMode(RoundingMode.DOWN);
 		
-		System.out.println(message);
+		PrintUtility.printColor(message, "green");
 		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Withdrawal");
 		amount = Double.parseDouble(df.format(amount));
 		if(amount > this.getBalance()) {
-			System.out.println("Cannot withdraw more than what is in your account!");
+			PrintUtility.printColor("Cannot withdraw more than what is in your account!", "red");
 		} else {
-			System.out.println("Enter a description for this withdrawal:");
+			PrintUtility.printColor("Enter a description for this withdrawal:", "green");
 			String description = sc.nextLine();
 			transactions.add(0, new Transaction("Withdrawal", description, (amount * -1), this.modifyBalance(amount * -1), LocalDateTime.now()));
-			System.out.println("Successfully withdrew $" + df.format(amount));
+			PrintUtility.printColor("Successfully withdrew $" + df.format(amount), "lime");
 		}
 	}
 
@@ -178,12 +179,12 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		
+		df.setRoundingMode(RoundingMode.DOWN);
 		return "Account in the name of " + name
 				+ "\nAccount ID: " + accountID
 				+ "\nAddress: " + address
 				+ "\nContact number: " + phoneNumber
-				+ "\nCurrent balance: " + balance
+				+ "\nCurrent balance: $" + df.format(balance)
 				+ "\nCreated on: " + created;
 	}
 	

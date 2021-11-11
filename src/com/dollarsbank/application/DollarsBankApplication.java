@@ -15,13 +15,19 @@ public class DollarsBankApplication {
 	public static Scanner sc;
 	public static ArrayList<Account> accountList;
 	public static Account currentUser;
+	private static boolean usingColor = false;
 	
 	public static void main(String[] args) {
 		
 		sc = new Scanner(System.in);
 		boolean running = true;
+		
+		// Get color confirmation
+		System.out.println("Run DOLLARSBANK with colored output? Y/N");
+		usingColor = InputUtility.yesNo(sc);
+		
+		// Load accounts
 		accountList = FileUtility.load();
-		//accountList = new ArrayList<Account>();
 		
 		// Run the login menu
 		do {
@@ -45,14 +51,18 @@ public class DollarsBankApplication {
 				running = false;
 				break;
 			default:
-				System.out.println("Error: Recieved invalid input");
+				PrintUtility.printColor("Error: Recieved invalid input.", "red");
 			}
 		} while(running);
 		
 		if(FileUtility.save(accountList))
-			System.out.println("Goodbye!");
+			PrintUtility.printColor("Goodbye!", "lime");
 
 		sc.close();
+	}
+	
+	public static boolean isUsingColor() {
+		return usingColor;
 	}
 	
 }

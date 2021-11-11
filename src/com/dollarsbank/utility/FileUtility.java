@@ -22,7 +22,7 @@ public class FileUtility {
 			
 			if(!file.exists()) {
 				file.createNewFile();
-				System.out.println("Info: Created new file: " + FILE_PATH);
+				PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
 				return new ArrayList<Account>();
 			} else {
 				@SuppressWarnings("unchecked")
@@ -31,10 +31,10 @@ public class FileUtility {
 			}
 			
 		} catch(IOException e) {
-			System.out.println("Info: Created new file: " + FILE_PATH);
+			PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
 			return new ArrayList<Account>();
 		} catch(ClassNotFoundException e) {
-			System.out.println("Error: Could not load file!");
+			PrintUtility.printColor("Error: Could not load file!", "red");
 		}
 		
 		return new ArrayList<Account>();
@@ -48,7 +48,7 @@ public class FileUtility {
 			if(!file.exists())
 				file.createNewFile();
 		} catch (IOException e) {
-			System.out.println("IOException: Could not create file '" + FILE_PATH + "'");
+			PrintUtility.printColor("IOException: Could not create file '" + FILE_PATH + "'", "red");
 		}
 		
 		try(ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(file))) {
@@ -56,7 +56,7 @@ public class FileUtility {
 			writer.writeObject(accounts);
 			
 		} catch (IOException e) {
-			System.out.println("Error: Could not save file!!!");
+			PrintUtility.printColor("Error: Could not save file!!!", "red");
 		}
 		
 		return true;

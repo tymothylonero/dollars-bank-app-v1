@@ -43,20 +43,20 @@ public class AccountUtility {
 	public static void fundsTransfer(Scanner sc, Account user) {
 		
 		if(user.getBalance() <= 0) {
-			System.out.println("Cannot transfer from an account with no money!");
+			PrintUtility.printColor("Cannot transfer from an account with no money!", "red");
 			return;
 		}
 		
 		if(!otherAccountsExist(user.getAccountID())) {
-			System.out.println("Cannot transfer when no other users exist!");
+			PrintUtility.printColor("Cannot transfer when no other users exist!", "red");
 			return;
 		}
 		
-		System.out.println("Please enter an account ID to transfer to:");
+		PrintUtility.printColor("Please enter an account ID to transfer to:", "green");
 		String input = sc.nextLine();
 		
 		if(input.equals(user.getAccountID())) {
-			System.out.println("You cannot transfer to your own account!");
+			PrintUtility.printColor("You cannot transfer to your own account!", "red");
 			return;
 		}
 		
@@ -72,7 +72,7 @@ public class AccountUtility {
 		if(found)
 			completeTransfer(sc, user, transferToAccount);
 		else
-			System.out.println("Error: Could not find an account with ID '" + input + "'.");
+			PrintUtility.printColor("Error: Could not find an account with ID '" + input + "'.", "red");
 		
 		return;
 	}
@@ -81,20 +81,20 @@ public class AccountUtility {
 		
 		df.setRoundingMode(RoundingMode.DOWN);
 		
-		System.out.println("Enter an amount to transfer to " + to.getName() + ":");
+		PrintUtility.printColor("Enter an amount to transfer to " + to.getName() + ":", "green");
 		double amount = InputUtility.getPositiveDoubleNonZero(sc, "Transfer");
 		amount = Double.parseDouble(df.format(amount));
 		if(amount > from.getBalance()) {
-			System.out.println("Cannot transfer more than what is in your account!");
+			PrintUtility.printColor("Cannot transfer more than what is in your account!", "red");
 			return;
 		}
-		System.out.println("Enter a description for this transfer:");
+		PrintUtility.printColor("Enter a description for this transfer:", "green");
 		String description = sc.nextLine();
 		
 		LocalDateTime now = LocalDateTime.now();
 		from.getTransactions().add(0, new Transaction("Funds Transfer", description, (amount * -1), from.modifyBalance(amount * -1), now));
 		to.getTransactions().add(0, new Transaction("Funds Transfer", description, (amount), to.modifyBalance(amount), now));
-		System.out.println("Successfully transfered $" + df.format(amount) + " to " + to.getName() + ".");
+		PrintUtility.printColor("Successfully transfered $" + df.format(amount) + " to " + to.getName() + ".", "lime");
 	}
 
 }

@@ -37,11 +37,11 @@ public class LoginController {
 			if(found != null)
 				loggedIn = true;
 			else if (loginAttempts == 0)
-				System.out.println("Failed to login. Returning to main menu...");
+				PrintUtility.printColor("Failed to login. Returning to main menu...", "red");
 			else if (loginAttempts == 1)
-				System.out.println("Invalid credentials. Try again. (" + loginAttempts + " attempt remaining)");
+				PrintUtility.printColor("Invalid credentials. Try again. (" + loginAttempts + " attempt remaining)", "red");
 			else
-				System.out.println("Invalid credentials. Try again. (" + loginAttempts + " attempts remaining)");
+				PrintUtility.printColor("Invalid credentials. Try again. (" + loginAttempts + " attempts remaining)", "yellow");
 			
 		} while(!loggedIn && loginAttempts > 0);
 		
@@ -59,7 +59,7 @@ public class LoginController {
 			if(AccountUtility.findAccountID(accounts, accountID) == null)
 				newAccount = true;
 			else
-				System.out.println("The account ID of '" + accountID + "' already exists.");
+				PrintUtility.printColor("The account ID of '" + accountID + "' already exists.", "yellow");
 			
 		} while (!newAccount);
 		

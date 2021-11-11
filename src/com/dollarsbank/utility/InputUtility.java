@@ -14,18 +14,18 @@ public class InputUtility {
 		int input = 0;
 		boolean valid = false;
 		do {
-			System.out.println("Please enter your selection:");
+			PrintUtility.printColor("Please enter your selection:", "green");
 			
 			try {
 				input = Integer.parseInt(sc.nextLine());
 				if(input > 0 && input <= options.length)
 					valid = true;
 				else
-					System.out.println(input + " is not a valid selection.");
+					PrintUtility.printColor(input + " is not a valid selection.", "red");
 				
 			// Input that is not an integer
 			} catch (NumberFormatException e) {
-				System.out.println("That is not an integer!");
+				PrintUtility.printColor("That is not an integer!", "red");
 			}
 			
 		} while(!valid);
@@ -41,7 +41,7 @@ public class InputUtility {
 				value = Double.parseDouble(sc.nextLine());
 				valid = true;
 			} catch (Exception e) {
-				System.out.println("Invalid input. Try again.");
+				PrintUtility.printColor("Invalid input. Try again.", "red");
 			}
 		} while(!valid);
 		
@@ -57,7 +57,7 @@ public class InputUtility {
 			if(value >= 0)
 				valid = true;
 			else
-				System.out.println(type + " cannot be negative.");
+				PrintUtility.printColor(type + " cannot be negative.", "red");
 
 		} while(!valid);
 		
@@ -73,13 +73,33 @@ public class InputUtility {
 			if(value > 0)
 				valid = true;
 			else if(value == 0)
-				System.out.println(type + " cannot be zero.");
+				PrintUtility.printColor(type + " cannot be zero.", "red");
 			else
-				System.out.println(type + " cannot be negative.");
+				PrintUtility.printColor(type + " cannot be negative.", "red");
 
 		} while(!valid);
 		
 		return value;
+	}
+	
+	public static boolean yesNo(Scanner sc) {
+		
+		boolean valid = false;
+		boolean result = false;
+		do {
+			String input = sc.nextLine().toLowerCase();
+			if(input.equals("y") || input.equals("yes")) {
+				valid = true;
+				result = true;
+			} else if(input.equals("n") || input.equals("no")) {
+				valid = true;
+				result = false;
+			} else {
+				PrintUtility.printColor("Invalid input. Please enter 'yes' or 'no'.", "red");
+			}
+		} while (!valid);
+		
+		return result;
 	}
 
 }

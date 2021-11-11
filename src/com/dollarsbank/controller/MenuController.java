@@ -51,10 +51,10 @@ public class MenuController {
 			// Log out of the account
 			case 6:
 				loggedIn = false;
-				System.out.println("Successfully logged out.");
+				PrintUtility.printColor("Successfully logged out.", "lime");
 				break;
 			default:
-				System.out.println("Error: Recieved invalid input");
+				PrintUtility.printColor("Error: Recieved invalid input.", "red");
 			}
 			System.out.println();
 		} while (loggedIn);
