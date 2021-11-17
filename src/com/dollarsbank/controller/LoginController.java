@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.dollarsbank.model.Account;
 import com.dollarsbank.utility.AccountUtility;
+import com.dollarsbank.utility.InputUtility;
 import com.dollarsbank.utility.PhoneNumberUtility;
 import com.dollarsbank.utility.PrintUtility;
 
@@ -72,8 +73,9 @@ public class LoginController {
 		System.out.println("Customer Contact Number:");
 		String phoneNumber = PhoneNumberUtility.formatPhoneNumber(sc.nextLine());
 		
-		System.out.println("Password:");
-		String password = sc.nextLine();
+		System.out.println("Password: Must be at least 8 characters, contains a lower\n"
+				+ "and upper case character, and a special character (!@#$%^&*-?):");
+		String password = InputUtility.createValidPassword(sc);
 		
 		Account created = new Account(accountID, password, name, address, phoneNumber, LocalDateTime.now(), 0);
 		created.initialDeposit(sc, "Initial Deposit Amount:");

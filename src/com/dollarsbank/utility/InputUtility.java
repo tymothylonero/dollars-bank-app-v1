@@ -101,5 +101,42 @@ public class InputUtility {
 		
 		return result;
 	}
+	
+	public static String createValidPassword(Scanner sc) {
+		
+		String newPassword = "";
+		boolean validPassword = false;
+		
+		do {
+			String error = "Your password did not contain:\n";
+			newPassword = sc.nextLine();
+			// Assume password is valid, invalidate as soon as condition fails
+			validPassword = true;
+			
+			if(newPassword.length() < 8) {
+				error = error + "- The required length of 8 characters\n";
+				validPassword = false;
+			}
+			if(!newPassword.matches(".*[abcdefghijklmnopqrstuvwxyz].*")) {
+				error = error + "- A lower case character\n";
+				validPassword = false;
+			}
+			if(!newPassword.matches(".*[ABCDEFGHIJKLMNOPQRSTUVWXYZ].*")) {
+				error = error + "- A upper case character\n";
+				validPassword = false;
+			}
+			if(!newPassword.matches(".*[\\!\\@\\#\\$\\%\\^\\&\\*\\-\\?].*")) {
+				error = error + "- a special character (!@#$%^&*-?)\n";
+				validPassword = false;
+			}
+			
+			error = error + "Please try again:";
+			if(!validPassword)
+				PrintUtility.printColor(error, "red");
+			
+		} while(!validPassword);
+		
+		return newPassword;
+	}
 
 }

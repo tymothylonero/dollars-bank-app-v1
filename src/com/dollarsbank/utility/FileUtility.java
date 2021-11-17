@@ -18,17 +18,27 @@ public class FileUtility {
 		
 		File file = new File(FILE_PATH);
 		
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				PrintUtility.printColor("Error: Could not create file!", "red");
+			}
+			PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
+			return new ArrayList<Account>();
+		}
+		
 		try(ObjectInputStream reader = new ObjectInputStream(new FileInputStream(file))) {
 			
-			if(!file.exists()) {
-				file.createNewFile();
-				PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
-				return new ArrayList<Account>();
-			} else {
+//			if(!file.exists()) {
+//				file.createNewFile();
+//				PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
+//				return new ArrayList<Account>();
+//			} else {
 				@SuppressWarnings("unchecked")
 				ArrayList<Account> accounts = (ArrayList<Account>) reader.readObject();
 				return accounts;
-			}
+//			}
 			
 		} catch(IOException e) {
 			PrintUtility.printColor("Info: Created new file: " + FILE_PATH, "yellow");
